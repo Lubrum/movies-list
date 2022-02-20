@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.luciano.movieslist.data.Movie;
+import br.com.luciano.movieslist.model.Movie;
 import movieslist.R;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
@@ -53,7 +53,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
         public void bind(Movie movie) {
             Glide.with(itemView)
-                    .load("https://image.tmdb.org/t/p/w342" + movie.posterPath)
+                    .load("https://image.tmdb.org/t/p/w342" + movie.getPosterPath())
                     .transform(new CenterCrop())
                     .into(poster);
             //itemView.setOnClickListener(() ->{

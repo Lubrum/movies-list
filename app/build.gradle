@@ -54,6 +54,7 @@ android {
             applicationId "br.com.luciano.movieslist"
             dimension "main"
             buildConfigField 'String', 'CONSUMER_KEY', apikeyProperties['MOVIES_DB_API_KEY']
+            buildConfigField 'String', 'CONSUMER_API', apikeyProperties['MOVIES_DB_API']
             buildConfigField 'boolean', 'SHOW_ACCESSIBILITY_MENU', 'true'
         }
     }

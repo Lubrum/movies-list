@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.io.IOException;
 import java.util.Objects;
 
-import br.com.luciano.movieslist.data.MoviesResponse;
+import br.com.luciano.movieslist.response.MoviesResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,9 +16,9 @@ public class MoviesApi {
 
     private final Api api;
 
-    public MoviesApi() {
+    public MoviesApi(final String API_URL) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/")
+                .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

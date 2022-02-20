@@ -1,5 +1,8 @@
 package br.com.luciano.movieslist.ui.home;
 
+import static br.com.luciano.movieslist.constants.AppConstants.API_KEY;
+import static br.com.luciano.movieslist.constants.AppConstants.API_URL;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +19,12 @@ import java.util.List;
 
 import br.com.luciano.movieslist.api.CustomCallback;
 import br.com.luciano.movieslist.api.MoviesApi;
-import br.com.luciano.movieslist.data.Movie;
-import movieslist.BuildConfig;
+import br.com.luciano.movieslist.model.Movie;
+
 import movieslist.R;
 import movieslist.databinding.FragmentHomeBinding;
 
-public class HomeFragment extends Fragment {
-
-    private static final String API_KEY = BuildConfig.CONSUMER_KEY;
+public class HomeFragment extends Fragment implements CustomCallback {
 
     private FragmentHomeBinding binding;
     private RecyclerView popularMoviesRV;
@@ -54,18 +55,18 @@ public class HomeFragment extends Fragment {
     }
 
     private void getPopularMovies() {
-        new MoviesApi().getPopularMovies(API_KEY, popularMoviesPage,
-            new CustomCallback(){
-                @Override
-                public void onSuccess(List<Movie> movies){
-                    popularMoviesAdapter.appendMovies(movies);
-                    attachPopularMoviesOnScrollListener();
-                }
-                @Override
-                public void onFailure(Throwable t){
-                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
+        new MoviesApi(API_URL).getPopularMovies(API_KEY, popularMoviesPage,this);
+    }
+
+    @Override
+    public void onSuccess(List<Movie> movies){
+        popularMoviesAdapter.appendMovies(movies);
+        attachPopularMoviesOnScrollListener();
+    }
+
+    @Override
+    public void onFailure(Throwable t){
+        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     private void attachPopularMoviesOnScrollListener() {
