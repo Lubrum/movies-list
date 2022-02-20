@@ -1,7 +1,6 @@
 package br.com.luciano.movieslist.ui.home;
 
 import static br.com.luciano.movieslist.constants.AppConstants.API_KEY;
-import static br.com.luciano.movieslist.constants.AppConstants.API_URL;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import br.com.luciano.movieslist.api.CustomCallback;
-import br.com.luciano.movieslist.api.MoviesApi;
 import br.com.luciano.movieslist.model.Movie;
 
+import br.com.luciano.movieslist.rest.MoviesApi;
 import movieslist.R;
 import movieslist.databinding.FragmentHomeBinding;
 
@@ -46,16 +45,12 @@ public class HomeFragment extends Fragment implements CustomCallback {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
-        //Key = "12ab9604d31fead9e29eb7aff6925145"
-        //final TextView textView = binding.textHome;
-        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
     }
 
     private void getPopularMovies() {
-        new MoviesApi(API_URL).getPopularMovies(API_KEY, popularMoviesPage,this);
+        new MoviesApi().getPopularMovies(API_KEY, popularMoviesPage, this);
     }
 
     @Override

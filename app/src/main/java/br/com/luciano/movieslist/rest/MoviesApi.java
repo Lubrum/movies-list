@@ -1,37 +1,33 @@
-package br.com.luciano.movieslist.api;
+package br.com.luciano.movieslist.rest;
 
 import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.util.Objects;
 
+import br.com.luciano.movieslist.api.Api;
+import br.com.luciano.movieslist.api.CustomCallback;
+import br.com.luciano.movieslist.api.RetrofitApi;
 import br.com.luciano.movieslist.response.MoviesResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoviesApi {
 
-    private final Api api;
+    private final Api apiRequest;
 
-    public MoviesApi(final String API_URL) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        this.api = retrofit.create(Api.class);
+    public MoviesApi() {
+        apiRequest = RetrofitApi.getRetrofitInstance().create(Api.class);
     }
 
     public void getPopularMovies(String key, int page, CustomCallback callback) {
-        Call<MoviesResponse> call = api.getPopularMovies(key, page);
+        Call<MoviesResponse> call = apiRequest.getPopularMovies(key, page);
         call.enqueue(new Callback<MoviesResponse>() {
             @Override
             public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
                 if (response.isSuccessful()) {
-                    callback.onSuccess(Objects.requireNonNull(response.body()).movies);
+                    callback.onSuccess(Objects.requireNonNull(response.body()).getMovies());
                     return;
                 }
 
