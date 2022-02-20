@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name" translatable="false">MoviesListFlix</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Favoritos</string>
-    <string name="title_notifications">Notificações</string>
+    <string name="tx_title_home">Home</string>
+    <string name="tx_title_dashboard">Favoritos</string>
+    <string name="tx_title_notifications">Notificações</string>
+
+    <string name="tx_popular">Popular</string>
+    <string name="tx_most_popular_movies">Filmes mais populares</string>
+    <string name="tx_movie_image">Imagem do filme</string>
 </resources>

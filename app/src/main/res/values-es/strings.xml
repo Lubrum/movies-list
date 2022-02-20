@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Favoritos</string>
-    <string name="title_notifications">Notificaciones</string>
+    <string name="tx_title_home">Home</string>
+    <string name="tx_title_dashboard">Favoritos</string>
+    <string name="tx_title_notifications">Notificaciones</string>
+
+    <string name="tx_popular">Popular</string>
+    <string name="tx_most_popular_movies">Películas más populares</string>
+    <string name="tx_movie_image">Película</string>
 </resources>
