@@ -1,16 +1,16 @@
-package br.com.luciano.movieslist.ui.home;
-
-import static br.com.luciano.movieslist.constants.AppConstants.API_KEY;
+package br.com.luciano.movieslist.ui.favorites;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,19 +18,19 @@ import java.util.List;
 
 import br.com.luciano.movieslist.repository.api.CustomCallback;
 import br.com.luciano.movieslist.model.Movie;
-
-import br.com.luciano.movieslist.repository.api.MoviesApi;
+import br.com.luciano.movieslist.ui.home.HomeAdapter;
 import movieslist.R;
-import movieslist.databinding.FragmentHomeBinding;
+import movieslist.databinding.FragmentDashboardBinding;
 
-public class HomeFragment extends Fragment implements CustomCallback {
+public class FavoritesFragment extends Fragment implements CustomCallback {
 
-    private FragmentHomeBinding binding;
+    private FragmentDashboardBinding binding;
+
     private RecyclerView popularMoviesRV;
     private HomeAdapter popularMoviesAdapter;
     private LinearLayoutManager popularMoviesLM;
 
-    private int popularMoviesPage = 1;
+    private int favoriteMoviesPage = 1;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -40,17 +40,24 @@ public class HomeFragment extends Fragment implements CustomCallback {
         popularMoviesRV.setLayoutManager(popularMoviesLM);
         popularMoviesAdapter = new HomeAdapter();
         popularMoviesRV.setAdapter(popularMoviesAdapter);
-        getPopularMovies();
+        getFavoriteMovies();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+
+        FavoritesViewModel dashboardViewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
+
+        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        final TextView textView = binding.textDashboard;
+        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        return root;
     }
 
-    private void getPopularMovies() {
-        new MoviesApi().getPopularMovies(API_KEY, popularMoviesPage, this);
+    private void getFavoriteMovies() {
+
     }
 
     @Override
@@ -74,8 +81,8 @@ public class HomeFragment extends Fragment implements CustomCallback {
 
                 if (firstVisibleItem + visibleItemCount >= totalItemCount / 2) {
                     popularMoviesRV.removeOnScrollListener(this);
-                    popularMoviesPage++;
-                    getPopularMovies();
+                    favoriteMoviesPage++;
+                    getFavoriteMovies();
                 }
             }
         });

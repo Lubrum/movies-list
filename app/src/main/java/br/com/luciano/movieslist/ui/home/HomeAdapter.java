@@ -56,9 +56,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
                     .load("https://image.tmdb.org/t/p/w342" + movie.getPosterPath())
                     .transform(new CenterCrop())
                     .into(poster);
-            //itemView.setOnClickListener(() ->{
-            //    onMovieClick.invoke(movie);
-            //});
+            itemView.setOnClickListener(iv ->{
+
+            });
         }
     }
 

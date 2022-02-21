@@ -1,4 +1,4 @@
-package br.com.luciano.movieslist.api;
+package br.com.luciano.movieslist.repository.api;
 
 import java.util.List;
 

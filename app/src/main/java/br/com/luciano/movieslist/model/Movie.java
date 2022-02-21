@@ -1,17 +1,38 @@
 package br.com.luciano.movieslist.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
+@Entity(tableName = "movie_table")
 public class Movie {
-    @SerializedName("id") private Long id;
-    @SerializedName("title") private String title;
-    @SerializedName("overview") private String overview;
-    @SerializedName("poster_path") private String posterPath;
-    @SerializedName("backdrop_path") private String backdropPath;
-    @SerializedName("vote_average") private String rating;
-    @SerializedName("release_date") private String releaseDate;
+
+    @SerializedName("id")
+    @PrimaryKey
+    @NonNull
+    private Long id;
+
+    @SerializedName("title")
+    private String title;
+
+    @SerializedName("overview")
+    private String overview;
+
+    @SerializedName("poster_path")
+    private String posterPath;
+
+    @SerializedName("backdrop_path")
+    private String backdropPath;
+
+    @SerializedName("vote_average")
+    private String rating;
+
+    @SerializedName("release_date")
+    private String releaseDate;
 
     public Movie(Long id, String title, String overview, String posterPath, String backdropPath, String rating, String releaseDate) {
         this.id = id;

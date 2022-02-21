@@ -1,13 +1,10 @@
-package br.com.luciano.movieslist.rest;
+package br.com.luciano.movieslist.repository.api;
 
 import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.util.Objects;
 
-import br.com.luciano.movieslist.api.Api;
-import br.com.luciano.movieslist.api.CustomCallback;
-import br.com.luciano.movieslist.api.RetrofitApi;
 import br.com.luciano.movieslist.response.MoviesResponse;
 import retrofit2.Call;
 import retrofit2.Callback;

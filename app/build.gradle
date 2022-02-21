@@ -41,8 +41,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     buildFeatures {
         viewBinding true
@@ -83,6 +83,9 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$androidTest_junit_version"
