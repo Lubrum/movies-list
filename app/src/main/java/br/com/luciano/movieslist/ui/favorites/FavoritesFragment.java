@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,61 +12,39 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
-import br.com.luciano.movieslist.repository.api.CustomCallback;
-import br.com.luciano.movieslist.model.Movie;
-import br.com.luciano.movieslist.ui.home.HomeAdapter;
 import movieslist.R;
-import movieslist.databinding.FragmentDashboardBinding;
+import movieslist.databinding.FragmentFavoritesBinding;
 
-public class FavoritesFragment extends Fragment implements CustomCallback {
+public class FavoritesFragment extends Fragment {
 
-    private FragmentDashboardBinding binding;
+    private FragmentFavoritesBinding binding;
 
     private RecyclerView popularMoviesRV;
-    private HomeAdapter popularMoviesAdapter;
+    private FavoritesAdapter popularMoviesAdapter;
     private LinearLayoutManager popularMoviesLM;
-
-    private int favoriteMoviesPage = 1;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        popularMoviesRV = view.findViewById(R.id.popular_movies_list);
-        popularMoviesLM = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        popularMoviesRV = view.findViewById(R.id.favorites_movies_list);
+        popularMoviesLM = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
         popularMoviesRV.setLayoutManager(popularMoviesLM);
-        popularMoviesAdapter = new HomeAdapter();
+        popularMoviesAdapter = new FavoritesAdapter();
         popularMoviesRV.setAdapter(popularMoviesAdapter);
-        getFavoriteMovies();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        FavoritesViewModel dashboardViewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
+        FavoritesViewModel viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
+        viewModel.getMovies().observe(getViewLifecycleOwner(), movies -> {
+            popularMoviesAdapter.appendMovies(movies);
+            attachPopularMoviesOnScrollListener();
+        });
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false);
+        return binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
-    }
-
-    private void getFavoriteMovies() {
-
-    }
-
-    @Override
-    public void onSuccess(List<Movie> movies){
-        popularMoviesAdapter.appendMovies(movies);
-        attachPopularMoviesOnScrollListener();
-    }
-
-    @Override
-    public void onFailure(Throwable t){
-        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     private void attachPopularMoviesOnScrollListener() {
@@ -81,8 +57,6 @@ public class FavoritesFragment extends Fragment implements CustomCallback {
 
                 if (firstVisibleItem + visibleItemCount >= totalItemCount / 2) {
                     popularMoviesRV.removeOnScrollListener(this);
-                    favoriteMoviesPage++;
-                    getFavoriteMovies();
                 }
             }
         });

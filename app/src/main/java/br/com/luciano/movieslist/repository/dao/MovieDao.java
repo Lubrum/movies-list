@@ -1,5 +1,6 @@
 package br.com.luciano.movieslist.repository.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,13 +13,7 @@ import br.com.luciano.movieslist.model.Movie;
 @Dao
 public interface MovieDao {
     @Query("SELECT * FROM movie")
-    List<Movie> getAll();
-
-    @Query("SELECT * FROM movie WHERE uid IN (:userIds)")
-    List<Movie> loadAllByIds(int[] userIds);
-
-    @Query("SELECT * FROM movie WHERE id = :last")
-    Movie findById(String first, String last);
+    LiveData<List<Movie>> getAll();
 
     @Insert
     void insertAll(Movie... users);

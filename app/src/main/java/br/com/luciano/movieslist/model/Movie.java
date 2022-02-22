@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-@Entity(tableName = "movie_table")
+@Entity(tableName = "movie")
 public class Movie {
 
     @SerializedName("id")

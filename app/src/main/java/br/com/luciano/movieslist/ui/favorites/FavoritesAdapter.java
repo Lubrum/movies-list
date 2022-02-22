@@ -1,4 +1,4 @@
-package br.com.luciano.movieslist.ui.home;
+package br.com.luciano.movieslist.ui.favorites;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
@@ -16,15 +17,15 @@ import java.util.List;
 import br.com.luciano.movieslist.model.Movie;
 import movieslist.R;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
+public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder> {
 
     private final List<Movie> movies = new ArrayList<>();
 
     @NonNull
     @Override
-    public HomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavoritesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
-        return new HomeViewHolder(view);
+        return new FavoritesViewHolder(view);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     }
 
     @Override
-    public void onBindViewHolder(HomeViewHolder holder, int position) {
+    public void onBindViewHolder(FavoritesViewHolder holder, int position) {
         holder.bind(movies.get(position));
     }
 
@@ -42,11 +43,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         notifyItemRangeInserted(this.movies.size(), movies.size() - 1);
     }
 
-    public static class HomeViewHolder extends RecyclerView.ViewHolder {
+    public static class FavoritesViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView poster;
 
-        HomeViewHolder(View itemView) {
+        FavoritesViewHolder(View itemView) {
             super(itemView);
             this.poster = itemView.findViewById(R.id.item_movie_poster);
         }

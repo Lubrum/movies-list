@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment implements CustomCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         popularMoviesRV = view.findViewById(R.id.popular_movies_list);
-        popularMoviesLM = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        popularMoviesLM = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
         popularMoviesRV.setLayoutManager(popularMoviesLM);
         popularMoviesAdapter = new HomeAdapter();
         popularMoviesRV.setAdapter(popularMoviesAdapter);

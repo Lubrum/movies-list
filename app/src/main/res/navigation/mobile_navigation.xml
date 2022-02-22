@@ -15,7 +15,7 @@
         android:id="@+id/navigation_dashboard"
         android:name="br.com.luciano.movieslist.ui.favorites.FavoritesFragment"
         android:label="@string/tx_title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_favorites" />
 
     <fragment
         android:id="@+id/navigation_notifications"
