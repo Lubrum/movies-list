@@ -70,3 +70,11 @@
 # com.google.android.gms
 -keep public class com.google.android.gms.* { public *; }
 -dontwarn com.google.android.gms.**
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
