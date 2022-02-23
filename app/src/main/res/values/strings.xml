@@ -7,4 +7,7 @@
     <string name="tx_popular">Popular</string>
     <string name="tx_most_popular_movies">Filmes mais populares</string>
     <string name="tx_movie_image">Imagem do filme</string>
+
+    <string name="tx_favorites">Favoritos</string>
+    <string name="tx_favorites_movies">Meus Filmes Favoritos</string>
 </resources>

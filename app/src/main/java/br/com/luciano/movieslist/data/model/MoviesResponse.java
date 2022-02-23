@@ -1,11 +1,9 @@
-package br.com.luciano.movieslist.response;
+package br.com.luciano.movieslist.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 import java.util.Objects;
-
-import br.com.luciano.movieslist.model.Movie;
 
 public class MoviesResponse {
 

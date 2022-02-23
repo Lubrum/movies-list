@@ -1,5 +1,7 @@
 package br.com.luciano.movieslist.ui.home;
 
+import static movieslist.BuildConfig.IMAGE_API;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.luciano.movieslist.model.Movie;
+import br.com.luciano.movieslist.data.model.Movie;
+import br.com.luciano.movieslist.data.local.AppDatabase;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import movieslist.R;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
@@ -53,12 +57,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
         public void bind(Movie movie) {
             Glide.with(itemView)
-                    .load("https://image.tmdb.org/t/p/w342" + movie.getPosterPath())
+                    .load(IMAGE_API + movie.getPosterPath())
                     .transform(new CenterCrop())
                     .into(poster);
-            itemView.setOnClickListener(iv -> {
 
-            });
+            itemView.setOnClickListener(iv -> AppDatabase
+                    .getDatabase(itemView.getContext())
+                    .movieDao()
+                    .insert(movie)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .subscribe()
+            );
         }
     }
 

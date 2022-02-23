@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,48 +19,30 @@ import movieslist.databinding.FragmentFavoritesBinding;
 public class FavoritesFragment extends Fragment {
 
     private FragmentFavoritesBinding binding;
-
-    private RecyclerView popularMoviesRV;
-    private FavoritesAdapter popularMoviesAdapter;
-    private LinearLayoutManager popularMoviesLM;
+    private FavoritesViewModel viewModel;
+    private RecyclerView favoritesMoviesRV;
+    private FavoritesAdapter favoritesMoviesAdapter;
+    private LinearLayoutManager favoritesMoviesLM;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        popularMoviesRV = view.findViewById(R.id.favorites_movies_list);
-        popularMoviesLM = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        popularMoviesRV.setLayoutManager(popularMoviesLM);
-        popularMoviesAdapter = new FavoritesAdapter();
-        popularMoviesRV.setAdapter(popularMoviesAdapter);
+        favoritesMoviesRV = view.findViewById(R.id.favorites_movies_list);
+        favoritesMoviesLM = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        favoritesMoviesRV.setLayoutManager(favoritesMoviesLM);
+        favoritesMoviesAdapter = new FavoritesAdapter();
+        favoritesMoviesRV.setAdapter(favoritesMoviesAdapter);
+        favoritesMoviesRV.setHasFixedSize(true);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        FavoritesViewModel viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
-        viewModel.getMovies().observe(getViewLifecycleOwner(), movies -> {
-            popularMoviesAdapter.appendMovies(movies);
-            attachPopularMoviesOnScrollListener();
-        });
-
+        viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
+        viewModel.getMovies().observe(getViewLifecycleOwner(),
+                movies -> favoritesMoviesAdapter.appendMovies(movies)
+        );
         binding = FragmentFavoritesBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
-    }
-
-    private void attachPopularMoviesOnScrollListener() {
-        popularMoviesRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                int totalItemCount = popularMoviesLM.getItemCount();
-                int visibleItemCount = popularMoviesLM.getChildCount();
-                int firstVisibleItem = popularMoviesLM.findFirstVisibleItemPosition();
-
-                if (firstVisibleItem + visibleItemCount >= totalItemCount / 2) {
-                    popularMoviesRV.removeOnScrollListener(this);
-                }
-            }
-        });
     }
 
     @Override

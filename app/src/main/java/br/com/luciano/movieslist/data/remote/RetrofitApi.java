@@ -1,4 +1,4 @@
-package br.com.luciano.movieslist.repository.api;
+package br.com.luciano.movieslist.data.remote;
 
 import static br.com.luciano.movieslist.constants.AppConstants.API_URL;
 

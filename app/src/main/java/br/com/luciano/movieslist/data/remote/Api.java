@@ -1,6 +1,6 @@
-package br.com.luciano.movieslist.repository.api;
+package br.com.luciano.movieslist.data.remote;
 
-import br.com.luciano.movieslist.response.MoviesResponse;
+import br.com.luciano.movieslist.data.model.MoviesResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

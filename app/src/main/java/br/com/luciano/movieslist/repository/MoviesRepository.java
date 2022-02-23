@@ -1,33 +1,69 @@
 package br.com.luciano.movieslist.repository;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
-import br.com.luciano.movieslist.model.Movie;
-import br.com.luciano.movieslist.repository.dao.AppDatabase;
-import br.com.luciano.movieslist.repository.dao.MovieDao;
+import br.com.luciano.movieslist.data.local.AppDatabase;
+import br.com.luciano.movieslist.data.model.Movie;
+import br.com.luciano.movieslist.data.remote.Api;
+import br.com.luciano.movieslist.data.remote.RetrofitApi;
+import br.com.luciano.movieslist.data.model.MoviesResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MoviesRepository {
 
-    private LiveData<List<Movie>> movies;
-    private MovieDao movieDao;
-    AppDatabase database;
+    private final Api apiRequest;
+    private final AppDatabase db;
 
-    public MoviesRepository(AppDatabase database) {
-        this.database = database;
+    private final MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
+
+    public MoviesRepository(Application ctx) {
+        db = AppDatabase.getDatabase(ctx);
+        apiRequest = RetrofitApi.getRetrofitInstance().create(Api.class);
     }
 
-    public LiveData<List<Movie>> getloadAllMovies() {
-        movies = database.movieDao().getAll();
-        return movies;
+    public void getPopularMovies(String key, Integer page) {
+        Call<MoviesResponse> call = apiRequest.getPopularMovies(key, page);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        movies.postValue(response.body().getMovies());
+                    } else {
+                        movies.postValue(null);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MoviesResponse> call, @NonNull Throwable t) {
+                if (!call.isCanceled()) {
+                    if (t.getMessage() != null) {
+                        movies.postValue(null);
+                    }
+                    movies.postValue(null);
+                }
+            }
+        });
+    }
+
+    public LiveData<List<Movie>> getAllMovies() {
+        return db.movieDao().getAll();
     }
 
     public void deleteMovie(Movie movie) {
-        database.movieDao().delete(movie);
+        db.movieDao().delete(movie);
     }
 
-    public void insertAllMovies(Movie... movies) {
-        database.movieDao().insertAll(movies);
+    public LiveData<List<Movie>> getPopularMoviesResponse() {
+        return movies;
     }
 }

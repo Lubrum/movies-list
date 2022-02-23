@@ -1,19 +1,31 @@
 package br.com.luciano.movieslist.ui.home;
 
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+import java.util.List;
 
-    private final MutableLiveData<String> mText;
+import br.com.luciano.movieslist.data.model.Movie;
+import br.com.luciano.movieslist.repository.MoviesRepository;
 
-    public HomeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+public class HomeViewModel extends AndroidViewModel {
+
+    private LiveData<List<Movie>> movies;
+    private MoviesRepository repository;
+
+    public HomeViewModel(Application application) {
+        super(application);
+        repository = new MoviesRepository(getApplication());
+        movies = repository.getPopularMoviesResponse();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void searchPopularMovies(String apiKey, int popularMoviesPage) {
+        repository.getPopularMovies(apiKey, popularMoviesPage);
+    }
+
+    public LiveData<List<Movie>> getMovies() {
+        return movies;
     }
 }

@@ -1,14 +1,15 @@
-package br.com.luciano.movieslist.model;
+package br.com.luciano.movieslist.data.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-@Entity(tableName = "movie")
+@Entity(tableName = "movie", indices = @Index(value = {"id"}, unique = true))
 public class Movie {
 
     @SerializedName("id")
