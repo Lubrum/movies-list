@@ -16,13 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.luciano.movieslist.data.model.Movie;
-import br.com.luciano.movieslist.data.local.AppDatabase;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import br.com.luciano.movieslist.ui.favorites.ClickListener;
 import movieslist.R;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
 
     private final List<Movie> movies = new ArrayList<>();
+    private final ClickListener listener;
+
+    public HomeAdapter(final ClickListener listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -46,7 +50,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         notifyItemRangeInserted(this.movies.size(), movies.size() - 1);
     }
 
-    public static class HomeViewHolder extends RecyclerView.ViewHolder {
+    public class HomeViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView poster;
 
@@ -61,13 +65,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
                     .transform(new CenterCrop())
                     .into(poster);
 
-            itemView.setOnClickListener(iv -> AppDatabase
-                    .getDatabase(itemView.getContext())
-                    .movieDao()
-                    .insert(movie)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .subscribe()
+            itemView.setOnClickListener(iv ->
+                    listener.onItemClick(movie)
             );
         }
     }

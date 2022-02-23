@@ -25,6 +25,10 @@ public class HomeViewModel extends AndroidViewModel {
         repository.getPopularMovies(apiKey, popularMoviesPage);
     }
 
+    public void insertMovie(Movie movie) {
+        repository.insertMovie(movie);
+    }
+
     public LiveData<List<Movie>> getMovies() {
         return movies;
     }

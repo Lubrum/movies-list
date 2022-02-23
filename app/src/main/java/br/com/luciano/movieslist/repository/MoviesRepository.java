@@ -13,6 +13,7 @@ import br.com.luciano.movieslist.data.model.Movie;
 import br.com.luciano.movieslist.data.remote.Api;
 import br.com.luciano.movieslist.data.remote.RetrofitApi;
 import br.com.luciano.movieslist.data.model.MoviesResponse;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,7 +61,19 @@ public class MoviesRepository {
     }
 
     public void deleteMovie(Movie movie) {
-        db.movieDao().delete(movie);
+        db.movieDao()
+                .delete(movie)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe();
+    }
+
+    public void insertMovie(Movie movie) {
+        db.movieDao()
+                .insert(movie)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe();
     }
 
     public LiveData<List<Movie>> getPopularMoviesResponse() {

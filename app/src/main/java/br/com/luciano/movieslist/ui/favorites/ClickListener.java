@@ -1,7 +1,7 @@
 package br.com.luciano.movieslist.ui.favorites;
 
-import android.view.View;
+import br.com.luciano.movieslist.data.model.Movie;
 
 public interface ClickListener {
-    void onItemClick(View v, int position);
+    void onItemClick(Movie movie);
 }

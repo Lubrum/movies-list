@@ -17,25 +17,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.luciano.movieslist.data.model.Movie;
-import br.com.luciano.movieslist.data.local.AppDatabase;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import movieslist.R;
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder> implements ClickListener {
+public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder> {
 
     private final List<Movie> movies = new ArrayList<>();
+    private final ClickListener listener;
+
+    public FavoritesAdapter(final ClickListener listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
     public FavoritesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
         return new FavoritesViewHolder(view);
-    }
-
-    @Override
-    public void onItemClick(View v, int position) {
-        this.movies.remove(position);
-        notifyItemRemoved(position);
     }
 
     @Override
@@ -71,14 +68,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                     .into(poster);
 
             itemView.setOnClickListener(iv -> {
-                AppDatabase
-                        .getDatabase(itemView.getContext())
-                        .movieDao()
-                        .delete(movie)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io())
-                        .subscribe();
-                onItemClick(itemView, getAdapterPosition());
+                listener.onItemClick(movies.get(getAdapterPosition()));
+                movies.remove(getAdapterPosition());
+                notifyItemRemoved(getAdapterPosition());
             });
         }
     }

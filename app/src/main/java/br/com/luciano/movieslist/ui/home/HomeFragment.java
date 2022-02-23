@@ -14,11 +14,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import br.com.luciano.movieslist.ui.favorites.FavoritesViewModel;
+import br.com.luciano.movieslist.data.model.Movie;
+import br.com.luciano.movieslist.ui.favorites.ClickListener;
+
 import movieslist.R;
 import movieslist.databinding.FragmentHomeBinding;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ClickListener {
 
     private HomeViewModel viewModel;
     private FragmentHomeBinding binding;
@@ -34,7 +36,7 @@ public class HomeFragment extends Fragment {
         popularMoviesRV = view.findViewById(R.id.popular_movies_list);
         popularMoviesLM = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
         popularMoviesRV.setLayoutManager(popularMoviesLM);
-        popularMoviesAdapter = new HomeAdapter();
+        popularMoviesAdapter = new HomeAdapter(this);
         popularMoviesRV.setAdapter(popularMoviesAdapter);
         popularMoviesRV.setHasFixedSize(true);
     }
@@ -72,5 +74,10 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onItemClick(Movie movie) {
+        viewModel.insertMovie(movie);
     }
 }

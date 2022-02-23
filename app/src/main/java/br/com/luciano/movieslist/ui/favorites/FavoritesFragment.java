@@ -8,15 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import br.com.luciano.movieslist.data.model.Movie;
 import movieslist.R;
 import movieslist.databinding.FragmentFavoritesBinding;
 
-public class FavoritesFragment extends Fragment {
+public class FavoritesFragment extends Fragment implements ClickListener {
 
     private FragmentFavoritesBinding binding;
     private FavoritesViewModel viewModel;
@@ -30,7 +30,7 @@ public class FavoritesFragment extends Fragment {
         favoritesMoviesRV = view.findViewById(R.id.favorites_movies_list);
         favoritesMoviesLM = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
         favoritesMoviesRV.setLayoutManager(favoritesMoviesLM);
-        favoritesMoviesAdapter = new FavoritesAdapter();
+        favoritesMoviesAdapter = new FavoritesAdapter(this);
         favoritesMoviesRV.setAdapter(favoritesMoviesAdapter);
         favoritesMoviesRV.setHasFixedSize(true);
     }
@@ -49,5 +49,10 @@ public class FavoritesFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onItemClick(Movie movie) {
+        viewModel.deleteMovie(movie);
     }
 }
