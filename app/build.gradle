@@ -27,11 +27,13 @@ android {
         }
     }
 
+    ndkVersion "21.3.6528147"
+
     buildTypes {
         debug {
-            debuggable true
-            minifyEnabled true
-            shrinkResources true
+            //debuggable true
+            //minifyEnabled true
+            //shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             multiDexEnabled true
         }
@@ -41,6 +43,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
+            ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -49,6 +54,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources = true
     }
     buildFeatures {
         viewBinding true
@@ -61,7 +70,7 @@ android {
             dimension "main"
             buildConfigField 'String', 'CONSUMER_KEY', apikeyProperties['MOVIES_DB_API_KEY']
             buildConfigField 'String', 'CONSUMER_API', apikeyProperties['MOVIES_DB_API']
-            buildConfigField 'String', 'IMAGE_API', apikeyProperties['IMAGE_DB_API']
+            buildConfigField 'String', 'IMAGE_URL', apikeyProperties['IMAGE_DB_API']
             buildConfigField 'boolean', 'SHOW_ACCESSIBILITY_MENU', 'true'
         }
     }
@@ -96,7 +105,10 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-rxjava3:$room_version"
 
-    testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "androidx.test.ext:junit:$androidTest_junit_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$androidTest_expresso_version"
+    testImplementation "androidx.test:core:$androidTest_core_version"
+    testImplementation "androidx.test.ext:junit:$androidTest_androidx_junit_version"
+    testImplementation "junit:junit:$androidTest_junit_version"
+    testImplementation "org.robolectric:robolectric:$androidTest_robolectric_version"
+    testImplementation "androidx.arch.core:core-testing:$androidTest_core_testing_version"
+    androidTestImplementation "androidx.test.ext:junit:$androidTest_androidx_junit_version"
 }

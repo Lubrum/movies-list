@@ -13,6 +13,7 @@ import br.com.luciano.movieslist.data.model.Movie;
 import br.com.luciano.movieslist.data.remote.Api;
 import br.com.luciano.movieslist.data.remote.RetrofitApi;
 import br.com.luciano.movieslist.data.model.MoviesResponse;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,11 +23,10 @@ public class MoviesRepository {
 
     private final Api apiRequest;
     private final AppDatabase db;
-
     private final MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
 
-    public MoviesRepository(Application ctx) {
-        db = AppDatabase.getDatabase(ctx);
+    public MoviesRepository(AppDatabase db) {
+        this.db = db;
         apiRequest = RetrofitApi.getRetrofitInstance().create(Api.class);
     }
 
@@ -56,27 +56,19 @@ public class MoviesRepository {
         });
     }
 
-    public LiveData<List<Movie>> getAllMovies() {
+    public LiveData<List<Movie>> getPopularMoviesResponse() {
+        return movies;
+    }
+
+    public LiveData<List<Movie>> getAllFavoriteMovies() {
         return db.movieDao().getAll();
     }
 
-    public void deleteMovie(Movie movie) {
-        db.movieDao()
-                .delete(movie)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe();
+    public Completable deleteFavoriteMovie(Movie movie) {
+        return db.movieDao().delete(movie);
     }
 
-    public void insertMovie(Movie movie) {
-        db.movieDao()
-                .insert(movie)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe();
-    }
-
-    public LiveData<List<Movie>> getPopularMoviesResponse() {
-        return movies;
+    public Completable insertFavoriteMovie(Movie movie) {
+        return db.movieDao().insert(movie);
     }
 }

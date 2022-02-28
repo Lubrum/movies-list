@@ -9,7 +9,7 @@ public class RetrofitApi {
 
     private static Retrofit retrofit;
 
-    private RetrofitApi () {}
+    private RetrofitApi() {}
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {

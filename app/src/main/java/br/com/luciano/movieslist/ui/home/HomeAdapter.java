@@ -1,6 +1,6 @@
 package br.com.luciano.movieslist.ui.home;
 
-import static movieslist.BuildConfig.IMAGE_API;
+import static br.com.luciano.movieslist.constants.AppConstants.IMAGE_URL;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +61,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
         public void bind(Movie movie) {
             Glide.with(itemView)
-                    .load(IMAGE_API + movie.getPosterPath())
+                    .load(IMAGE_URL + movie.getPosterPath())
                     .transform(new CenterCrop())
                     .into(poster);
 

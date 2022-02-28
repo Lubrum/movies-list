@@ -12,7 +12,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import br.com.luciano.movieslist.data.local.AppDatabase;
 import br.com.luciano.movieslist.data.model.Movie;
+import br.com.luciano.movieslist.repository.MoviesRepository;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import movieslist.R;
 import movieslist.databinding.FragmentFavoritesBinding;
 
@@ -37,7 +40,10 @@ public class FavoritesFragment extends Fragment implements ClickListener {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
+        AppDatabase db = AppDatabase.getDatabase(getContext());
+        MoviesRepository repository = new MoviesRepository(db);
+        FavoritesViewModelFactory factory = new FavoritesViewModelFactory(repository);
+        viewModel = new ViewModelProvider(this, factory).get(FavoritesViewModel.class);
         viewModel.getMovies().observe(getViewLifecycleOwner(),
                 movies -> favoritesMoviesAdapter.appendMovies(movies)
         );
@@ -53,6 +59,9 @@ public class FavoritesFragment extends Fragment implements ClickListener {
 
     @Override
     public void onItemClick(Movie movie) {
-        viewModel.deleteMovie(movie);
+        viewModel.deleteMovie(movie)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe();
     }
 }

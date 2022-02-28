@@ -14,9 +14,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import br.com.luciano.movieslist.data.local.AppDatabase;
 import br.com.luciano.movieslist.data.model.Movie;
+import br.com.luciano.movieslist.repository.MoviesRepository;
 import br.com.luciano.movieslist.ui.favorites.ClickListener;
 
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import movieslist.R;
 import movieslist.databinding.FragmentHomeBinding;
 
@@ -26,7 +29,7 @@ public class HomeFragment extends Fragment implements ClickListener {
     private FragmentHomeBinding binding;
     private RecyclerView popularMoviesRV;
     private HomeAdapter popularMoviesAdapter;
-    private LinearLayoutManager popularMoviesLM;
+    private LinearLayoutManager popularMoviesLLM;
 
     private int popularMoviesPage = 1;
 
@@ -34,8 +37,8 @@ public class HomeFragment extends Fragment implements ClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         popularMoviesRV = view.findViewById(R.id.popular_movies_list);
-        popularMoviesLM = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        popularMoviesRV.setLayoutManager(popularMoviesLM);
+        popularMoviesLLM = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        popularMoviesRV.setLayoutManager(popularMoviesLLM);
         popularMoviesAdapter = new HomeAdapter(this);
         popularMoviesRV.setAdapter(popularMoviesAdapter);
         popularMoviesRV.setHasFixedSize(true);
@@ -43,8 +46,11 @@ public class HomeFragment extends Fragment implements ClickListener {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        viewModel.searchPopularMovies(API_KEY, popularMoviesPage);
+        AppDatabase db = AppDatabase.getDatabase(getContext());
+        MoviesRepository repository = new MoviesRepository(db);
+        HomeViewModelFactory factory = new HomeViewModelFactory(repository);
+        viewModel = new ViewModelProvider(this, factory).get(HomeViewModel.class);
+        viewModel.fetchPopularMovies(API_KEY, popularMoviesPage);
         viewModel.getMovies().observe(getViewLifecycleOwner(), movies -> {
             popularMoviesAdapter.appendMovies(movies);
             attachPopularMoviesOnScrollListener();
@@ -57,17 +63,20 @@ public class HomeFragment extends Fragment implements ClickListener {
         popularMoviesRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                int totalItemCount = popularMoviesLM.getItemCount();
-                int visibleItemCount = popularMoviesLM.getChildCount();
-                int firstVisibleItem = popularMoviesLM.findFirstVisibleItemPosition();
-
-                if (firstVisibleItem + visibleItemCount >= totalItemCount / 2) {
+                if (fetchMorePopularMovies()) {
                     popularMoviesRV.removeOnScrollListener(this);
                     popularMoviesPage++;
-                    viewModel.searchPopularMovies(API_KEY, popularMoviesPage);
+                    viewModel.fetchPopularMovies(API_KEY, popularMoviesPage);
                 }
             }
         });
+    }
+
+    private boolean fetchMorePopularMovies() {
+        int totalItemCount = popularMoviesLLM.getItemCount();
+        int visibleItemCount = popularMoviesLLM.getChildCount();
+        int firstVisibleItem = popularMoviesLLM.findFirstVisibleItemPosition();
+        return firstVisibleItem + visibleItemCount >= totalItemCount / 2;
     }
 
     @Override
@@ -78,6 +87,9 @@ public class HomeFragment extends Fragment implements ClickListener {
 
     @Override
     public void onItemClick(Movie movie) {
-        viewModel.insertMovie(movie);
+        viewModel.insertMovie(movie)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe();
     }
 }
