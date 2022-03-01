@@ -31,9 +31,9 @@ android {
 
     buildTypes {
         debug {
-            //debuggable true
-            //minifyEnabled true
-            //shrinkResources true
+            debuggable true
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             multiDexEnabled true
         }
@@ -77,38 +77,45 @@ android {
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
-    implementation "androidx.vectordrawable:vectordrawable:$vectordrawable_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.navigation:navigation-fragment:$navigation_version"
-    implementation "androidx.navigation:navigation-ui:$navigation_version"
+    def appDependencies = rootProject.ext.mainApplication
+    def unitTestDependencies = rootProject.ext.unitTesting
 
-    implementation "com.google.android.material:material:$material_version"
+    implementation appDependencies.appcompat
+    implementation appDependencies.constraintlayout
+    implementation appDependencies.vectordrawable
 
-    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
-    implementation ('com.google.firebase:firebase-analytics') {
+    implementation appDependencies.lifecycleLivedataKtx
+    implementation appDependencies.lifecycleViewmodelKtx
+
+    implementation appDependencies.navigationFragment
+    implementation appDependencies.navigationUi
+
+    implementation appDependencies.material
+
+    implementation platform(appDependencies.firebaseBom)
+    implementation (appDependencies.firebaseAnalytics) {
         exclude module: "play-services-ads-identifier"
     }
-    implementation 'com.google.firebase:firebase-perf'
-    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation appDependencies.firebasePerf
+    implementation appDependencies.firebaseCrashlytics
 
-    implementation "com.google.code.gson:gson:$gson_version"
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    implementation appDependencies.gson
 
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation appDependencies.glide
+    annotationProcessor appDependencies.compiler
 
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-rxjava3:$room_version"
+    implementation appDependencies.retrofit
+    implementation appDependencies.converterGson
 
-    testImplementation "androidx.test:core:$androidTest_core_version"
-    testImplementation "androidx.test.ext:junit:$androidTest_androidx_junit_version"
-    testImplementation "junit:junit:$androidTest_junit_version"
-    testImplementation "org.robolectric:robolectric:$androidTest_robolectric_version"
-    testImplementation "androidx.arch.core:core-testing:$androidTest_core_testing_version"
-    androidTestImplementation "androidx.test.ext:junit:$androidTest_androidx_junit_version"
+    implementation appDependencies.roomRuntime
+    annotationProcessor appDependencies.roomCompiler
+    implementation appDependencies.roomRxjava3
+
+    testImplementation unitTestDependencies.androidxTestCore
+    testImplementation unitTestDependencies.androidxTestCoreJunit
+    testImplementation unitTestDependencies.junit
+    testImplementation unitTestDependencies.robolectric
+    testImplementation unitTestDependencies.coreTesting
+
+    androidTestImplementation unitTestDependencies.androidxTestCoreJunit
 }

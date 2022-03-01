@@ -1,0 +1,58 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+ext {
+    androidTest_junit_version = "4.13.2"
+    androidTest_expresso_version = "3.4.0"
+    androidTest_androidx_junit_version = "1.1.3"
+    androidTest_robolectric_version = "4.7.3"
+    androidTest_core_testing_version = "2.1.0"
+    androidTest_core_version = "1.4.0"
+    appcompat_version = "1.4.1"
+    constraintlayout_version = "2.1.3"
+    firebase_bom_version = "29.1.0"
+    glide_version = '4.13.1'
+    gson_version = '2.9.0'
+    kotlin_version = "1.4.30"
+    lifecycle_version = "2.4.1"
+    material_version = "1.5.0"
+    navigation_version = "2.4.1"
+    room_version = "2.4.2"
+    vectordrawable_version = "1.1.0"
+    retrofit_version = "2.6.4"
+
+    mainApplication = [
+        appcompat               : "androidx.appcompat:appcompat:$appcompat_version",
+        constraintlayout        : "androidx.constraintlayout:constraintlayout:$constraintlayout_version",
+        vectordrawable          : "androidx.vectordrawable:vectordrawable:$vectordrawable_version",
+        lifecycleLivedataKtx    : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version",
+        lifecycleViewmodelKtx   : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
+        navigationFragment      : "androidx.navigation:navigation-fragment:$navigation_version",
+        navigationUi            : "androidx.navigation:navigation-ui:$navigation_version",
+        material                : "com.google.android.material:material:$material_version",
+        firebaseBom             : "com.google.firebase:firebase-bom:$firebase_bom_version",
+        firebaseAnalytics       : "com.google.firebase:firebase-analytics",
+        firebasePerf            : "com.google.firebase:firebase-perf",
+        firebaseCrashlytics     : "com.google.firebase:firebase-crashlytics",
+        gson                    : "com.google.code.gson:gson:$gson_version",
+        glide                   : "com.github.bumptech.glide:glide:$glide_version",
+        compiler                : "com.github.bumptech.glide:compiler:$glide_version",
+        retrofit                : "com.squareup.retrofit2:retrofit:$retrofit_version",
+        converterGson           : "com.squareup.retrofit2:converter-gson:$retrofit_version",
+        roomRuntime             : "androidx.room:room-runtime:$room_version",
+        roomCompiler            : "androidx.room:room-compiler:$room_version",
+        roomRxjava3             : "androidx.room:room-rxjava3:$room_version",
+    ]
+
+    unitTesting = [
+        androidxTestCore        : "androidx.test:core:$androidTest_core_version",
+        androidxTestCoreJunit   : "androidx.test.ext:junit:$androidTest_androidx_junit_version",
+        junit                   : "junit:junit:$androidTest_junit_version",
+        robolectric             : "org.robolectric:robolectric:$androidTest_robolectric_version",
+        coreTesting             : "androidx.arch.core:core-testing:$androidTest_core_testing_version",
+    ]
+}

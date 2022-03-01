@@ -1,25 +1,6 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: 'dependencies.gradle'
+
 buildscript {
-    ext {
-        androidTest_junit_version = "4.13.2"
-        androidTest_expresso_version = "3.4.0"
-        androidTest_androidx_junit_version = "1.1.3"
-        androidTest_robolectric_version = "4.7.3"
-        androidTest_core_testing_version = "2.1.0"
-        androidTest_core_version = "1.4.0"
-        appcompat_version = "1.4.1"
-        constraintlayout_version = "2.1.3"
-        firebase_bom_version = "29.1.0"
-        glide_version = "4.12.0"
-        gson_version = "2.8.9"
-        kotlin_version = "1.4.30"
-        lifecycle_version = "2.4.1"
-        material_version = "1.5.0"
-        navigation_version = "2.4.1"
-        room_version = "2.4.2"
-        vectordrawable_version = "1.1.0"
-        retrofit_version = "2.6.4"
-    }
     repositories {
         google()
         mavenCentral()
@@ -36,6 +17,10 @@ buildscript {
             options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
         }
     }
+}
+
+tasks.withType(Test).configureEach {
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
 }
 
 task clean(type: Delete) {
