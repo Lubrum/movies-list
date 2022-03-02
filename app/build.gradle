@@ -25,6 +25,7 @@ android {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        resConfigs "en", "es", "pt"
     }
 
     ndkVersion "21.3.6528147"
@@ -92,7 +93,6 @@ dependencies {
 
     implementation appDependencies.material
 
-    implementation platform(appDependencies.firebaseBom)
     implementation (appDependencies.firebaseAnalytics) {
         exclude module: "play-services-ads-identifier"
     }
