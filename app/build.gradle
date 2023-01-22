@@ -10,12 +10,12 @@ def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "br.com.luciano.movieslist"
         minSdk 19
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -66,7 +66,7 @@ android {
     flavorDimensions "main"
 
     productFlavors {
-        main {
+        core {
             applicationId "br.com.luciano.movieslist"
             dimension "main"
             buildConfigField 'String', 'CONSUMER_KEY', apikeyProperties['MOVIES_DB_API_KEY']
@@ -110,6 +110,9 @@ dependencies {
     implementation appDependencies.roomRuntime
     annotationProcessor appDependencies.roomCompiler
     implementation appDependencies.roomRxjava3
+
+    implementation appDependencies.dagger
+    annotationProcessor appDependencies.daggerCompiler
 
     testImplementation unitTestDependencies.androidxTestCore
     testImplementation unitTestDependencies.androidxTestCoreJunit

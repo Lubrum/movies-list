@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import br.com.luciano.movieslist.data.model.Movie;
 import br.com.luciano.movieslist.repository.MoviesRepository;
 import io.reactivex.rxjava3.core.Completable;
@@ -14,6 +16,7 @@ public class HomeViewModel extends ViewModel {
     private final LiveData<List<Movie>> movies;
     private final MoviesRepository repository;
 
+    @Inject
     public HomeViewModel(MoviesRepository repository) {
         this.repository = repository;
         movies = repository.getPopularMoviesResponse();
