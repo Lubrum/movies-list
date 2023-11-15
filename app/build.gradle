@@ -10,12 +10,12 @@ def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "br.com.luciano.movieslist"
         minSdk 19
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -25,7 +25,7 @@ android {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
-        resConfigs "en", "es", "pt"
+        resourceConfigurations += ['en', 'es', 'pt']
     }
 
     ndkVersion "21.3.6528147"
@@ -75,6 +75,7 @@ android {
             buildConfigField 'boolean', 'SHOW_ACCESSIBILITY_MENU', 'true'
         }
     }
+    namespace 'movieslist'
 }
 
 dependencies {

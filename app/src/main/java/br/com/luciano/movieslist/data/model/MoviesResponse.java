@@ -11,6 +11,9 @@ public class MoviesResponse {
     @SerializedName("results") private List<Movie> movies;
     @SerializedName("total_pages") private Integer pages;
 
+    private MoviesResponse() {
+    }
+
     public MoviesResponse(Integer page, List<Movie> movies, Integer pages) {
         this.page = page;
         this.movies = movies;

@@ -23,15 +23,13 @@ public class FavoritesFragment extends Fragment implements ClickListener {
 
     private FragmentFavoritesBinding binding;
     private FavoritesViewModel viewModel;
-    private RecyclerView favoritesMoviesRV;
     private FavoritesAdapter favoritesMoviesAdapter;
-    private LinearLayoutManager favoritesMoviesLM;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        favoritesMoviesRV = view.findViewById(R.id.favorites_movies_list);
-        favoritesMoviesLM = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView favoritesMoviesRV = view.findViewById(R.id.favorites_movies_list);
+        LinearLayoutManager favoritesMoviesLM = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
         favoritesMoviesRV.setLayoutManager(favoritesMoviesLM);
         favoritesMoviesAdapter = new FavoritesAdapter(this);
         favoritesMoviesRV.setAdapter(favoritesMoviesAdapter);

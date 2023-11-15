@@ -35,7 +35,7 @@ public class Movie {
     @SerializedName("release_date")
     private String releaseDate;
 
-    public Movie(Long id, String title, String overview, String posterPath, String backdropPath, String rating, String releaseDate) {
+    public Movie(@NonNull Long id, String title, String overview, String posterPath, String backdropPath, String rating, String releaseDate) {
         this.id = id;
         this.title = title;
         this.overview = overview;
@@ -45,11 +45,12 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
+    @NonNull
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(@NonNull Long id) {
         this.id = id;
     }
 

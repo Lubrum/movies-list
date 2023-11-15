@@ -46,6 +46,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     }
 
     public void appendMovies(List<Movie> movies) {
+        if (movies == null) {
+            return;
+        }
         this.movies.addAll(movies);
         notifyItemRangeInserted(this.movies.size(), movies.size() - 1);
     }
